@@ -1,5 +1,8 @@
 # geo
 
+## Link
+https://fan630.github.io/geo/
+
 ## 特色
 
 快速從地址轉換經緯度
@@ -16,7 +19,8 @@
 我:『網路上查到的是什麼語言寫?』   
 友人:『javaScript什麼API的...』  
 
-所以就有這次的sideProject
+做了一個晚上後, 所以就有這次的sideProject
+
 
 ## 技術
 

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./style.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+        <title>簡易經緯度查詢</title>
+</head>
+<body>
+    <div class="wrapper">
+        <textarea class="input__textArea" placeholder="請輸入地址並空行" ></textarea>
+                    <div>
+            <button type="button" class="btn btn-primary">轉換</button>          
+        </div>
+        <br />
+        <table class="table table-borderless">
+                <thead>
+                    <tr>
+                        <td scope="col">地點</td>
+                        <td scope="col">緯度</td>
+                        <td scope="col">經度</td>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr>
+                        <td scope="col" class="input__value"></td>
+                        <td scope="col" class="lat"></td>
+                        <td scope="col" class="lng"></td>
+                    </tr>
+                </thead>
+        </table>
+    </div>
+
+    <script>
+
+        const oldValue = window.localStorage.getItem('address')
+        const oldLat = window.localStorage.getItem('lat')
+        const oldLng = window.localStorage.getItem('lng')
+
+        $('.input__value').html(oldValue)
+        $('.lat').html(oldLat)
+        $('.lng').html(oldLng)
+
+        //localstorage如何下在標題列?
+        function createAddress(){ 
+                // var list = ['台灣大學', '政治大學']
+                // var newList = []
+                // for(var i = 0; i < list.length; i += 1){
+                //        newList.push(list[i])
+                // }
+
+                // console.log(newList.join(' '))
+
+                var input__textArea = $('.input__textArea').val()
+                
+                var url = `https://maps.googleapis.com/maps/api/geocode/json?address=${input__textArea}&key=AIzaSyBGUJ4osCN5Wb5_aPKacYdOCC2qKClAKjQ`
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    address: input__textArea
+                })
+
+                .done((resp)=>{
+                    const lat = resp.results[0].geometry.location.lat
+                    const lng = resp.results[0].geometry.location.lng
+
+                    window.localStorage.setItem('address', input__textArea)
+                    window.localStorage.setItem('lat', lat)
+                    window.localStorage.setItem('lng', lng)
+
+                    $('table').append(
+                        `<thead>
+                            <tr>
+                                <td scope="col class="input_value">${input__textArea}</td>
+                                <td scope="col" class="lat">${lat}</td>
+                                <td scope="col" class="lng">${lng}</td>
+                            </tr>
+                        </thead>`
+                    )
+
+                            
+                
+                })
+
+                .fail((resp)=>{
+                    alert('請輸入地址')
+                })
+
+
+
+
+                $('.input__textArea').val('')
+            }
+        //}
+
+        $('.btn').on('click', createAddress)
+         $('.input__textArea').keydown(function(e){
+             if(e.keyCode === 13){
+                 createAddress()
+             }
+         })
+
+
+
+    </script>
+
+</body>
+</html>

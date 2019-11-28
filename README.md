@@ -1,7 +1,6 @@
 # geo
 
-## Link
-https://fan630.github.io/geo/
+[Link](https://fan630.github.io/geo/)
 
 ## 特色
 

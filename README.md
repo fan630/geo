@@ -28,7 +28,7 @@
 
 ## updateList
 
-- 11/28 更新localStorage
+- 11/28 更新localStorage, 拆分檔案
 
 ## todoList
 
